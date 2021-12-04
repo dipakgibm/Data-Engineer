@@ -8,18 +8,22 @@ from airflow.operators.bash_operator import BashOperator
 # This makes scheduling easy
 from airflow.utils.dates import days_ago
 
+#defining DAG arguments
+
+# You can override them on a per-task basis during operator initialization
 default_args = {
-    'owner': 'Deepak',
+    'owner': 'deepak',
     'start_date': days_ago(0),
-    'email': 'dipakgibm@gmail.com',
+    'email': ['dipakgibm@gmail.com'],
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
-    'retries_delay': timedelta(minutes=1),
-
+    'retry_delay': timedelta(minutes=1),
 }
 
 
+
+# defining the DAG
 
 # define the DAG
 dag = DAG(
@@ -35,7 +39,7 @@ dag = DAG(
 
 download = BashOperator(
     task_id='download',
-    bash_command='wget "https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DB0250EN-SkillsNetwork/labs/Apache%20Airflow/Build%20a%20DAG%20using%20Airflow/web-server-access-log.txt"',
+    bash_command='wget "https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DB0250EN-SkillsNetwork/labs/Apache%20Airflow/Build%20a%20DAG%20using%20Airflow/web-server-access-log.txt" >web-server-access-log.txt',
     dag=dag,
 )
 
